@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZEREN ONLINE - AR Card</title>
+
+    <!-- کتێبخانەیێن MindAR و A-Frame بۆ کارکرنا AR -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+      }
+
+      /* شێوازێ کارتا سوشیال میدیای یا تە */
+      .card-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 85%;
+        max-width: 350px;
+        text-align: center;
+        z-index: 10;
+      }
+
+      .welcome {
+        color: #d4af37;
+        font-size: 26px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        min-height: 35px;
+      }
+
+      .social {
+        opacity: 0;
+        transform: translateY(20px);
+        margin: 12px 0;
+        padding: 14px;
+        border: 1px solid #d4af37;
+        border-radius: 12px;
+        background: rgba(17, 17, 17, 0.85);
+        text-decoration: none;
+        display: block;
+        transition: 0.3s;
+      }
+
+      .social:hover {
+        transform: translateY(-3px);
+        background: rgba(212, 175, 55, 0.25);
+      }
+
+      .social-name {
+        display: block;
+        color: #d4af37;
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .username {
+        color: white;
+        font-size: 14px;
+      }
+
+      .show {
+        animation: showCard 0.7s ease forwards;
+      }
+
+      @keyframes showCard {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- دیزاینێ سوشیال میدیای کە ل سەر شاشەیێ دیار دبيت کاتێ کامێرا ڤەکری بیت -->
+    <div class="card-container">
+      <div id="welcome" class="welcome"></div>
+
+      <a
+        class="social"
+        id="instagram"
+        href="https://www.instagram.com/mem0r4?igsh=MW8zd2RnYnp5YTF0ZQ=="
+        target="_blank"
+      >
+        <span class="social-name">Instagram</span>
+        <span class="username">@mem0r4</span>
+      </a>
+
+      <a
+        class="social"
+        id="tiktok"
+        href="https://www.tiktok.com/@zerenonline0?_r=1&_t=ZS-98pHig3gJ6r"
+        target="_blank"
+      >
+        <span class="social-name">TikTok</span>
+        <span class="username">@zerenonline0</span>
+      </a>
+
+      <a
+        class="social"
+        id="snapchat"
+        href="https://snapchat.com/t/d3i7IUdo"
+        target="_blank"
+      >
+        <span class="social-name">Snapchat</span>
+        <span class="username">@zerinonline0</span>
+      </a>
+    </div>
+
+    <!-- بەشێ Augmented Reality (بۆ ناسینا QR-کۆدێ تە) -->
+    <a-scene
+      mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights: true"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <!-- کاتێ کامێرا QR-کۆدێ د ناسیت -->
+      <a-entity mindar-image-target="targetIndex: 0"></a-entity>
+    </a-scene>
+
+    <script>
+      const welcomeText = "Welcome ✦";
+      const welcome = document.getElementById("welcome");
+      let index = 0;
+
+      function typeText() {
+        if (index < welcomeText.length) {
+          welcome.textContent += welcomeText[index];
+          index++;
+          setTimeout(typeText, 120);
+        } else {
+          showSocialCards();
+        }
+      }
+
+      function showSocialCards() {
+        const cards = document.querySelectorAll(".social");
+        cards.forEach((card, i) => {
+          setTimeout(() => {
+            card.classList.add("show");
+          }, i * 350);
+        });
+      }
+
+      // دەستپێکرنا نڤیسینێ
+      setTimeout(typeText, 1000);
+    </script>
+  </body>
+</html>
