@@ -1,439 +1,449 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  />
+  <head>
+    <meta charset="UTF-8" />
 
-  <title>ZEREN ONLINE - AR Card</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
 
-  <!-- A-Frame -->
-  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <title>ZEREN ONLINE - AR Card</title>
 
-  <!-- MindAR -->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+    <!-- ==========================================
+       A-FRAME
+       ========================================== -->
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
 
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-      background: #000;
-    }
+    <!-- ==========================================
+       MINDAR
+       ========================================== -->
 
-    /* AR camera */
-    a-scene {
-      position: fixed !important;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
 
-    /* Social media container */
-    .card-container {
-      position: fixed;
-      top: 50%;
-      left: 50%;
+    <!-- ==========================================
+       STYLE
+       ========================================== -->
 
-      transform: translate(-50%, -50%);
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-      width: 85%;
-      max-width: 350px;
+      html,
+      body {
+        width: 100%;
+        height: 100%;
 
-      text-align: center;
+        margin: 0;
+        padding: 0;
 
-      z-index: 10;
+        overflow: hidden;
 
-      pointer-events: none;
-    }
+        font-family: Arial, sans-serif;
 
-    /* Welcome text */
-    .welcome {
-      color: #d4af37;
+        background: #000;
+      }
 
-      font-size: 26px;
-      font-weight: bold;
+      /* ==========================================
+       AR CAMERA
+       ========================================== */
 
-      margin-bottom: 20px;
+      a-scene {
+        position: fixed !important;
 
-      min-height: 35px;
+        top: 0;
+        left: 0;
 
-      text-shadow:
-        0 0 5px rgba(212, 175, 55, 0.5),
-        0 0 10px rgba(212, 175, 55, 0.3);
-    }
+        width: 100%;
+        height: 100%;
 
-    /* Social buttons */
-    .social {
-      opacity: 0;
+        z-index: 1;
+      }
 
-      transform: translateY(20px);
+      /* ==========================================
+       SOCIAL MEDIA CARD
+       ========================================== */
 
-      margin: 12px 0;
-      padding: 14px;
+      .card-container {
+        position: fixed;
 
-      border: 1px solid #d4af37;
-      border-radius: 12px;
+        top: 50%;
+        left: 50%;
 
-      background: rgba(17, 17, 17, 0.88);
+        transform: translate(-50%, -50%);
 
-      text-decoration: none;
+        width: 85%;
+        max-width: 350px;
 
-      display: block;
+        text-align: center;
 
-      transition:
-        transform 0.3s ease,
-        background 0.3s ease;
+        z-index: 10;
 
-      pointer-events: auto;
+        pointer-events: none;
+      }
 
-      box-shadow:
-        0 0 10px rgba(212, 175, 55, 0.15);
-    }
+      /* ==========================================
+       WELCOME
+       ========================================== */
 
-    .social:hover {
-      transform: translateY(-3px);
+      .welcome {
+        color: #d4af37;
 
-      background: rgba(212, 175, 55, 0.25);
+        font-size: 26px;
 
-      box-shadow:
-        0 0 15px rgba(212, 175, 55, 0.3);
-    }
+        font-weight: bold;
 
-    /* Social name */
-    .social-name {
-      display: block;
+        margin-bottom: 20px;
 
-      color: #d4af37;
+        min-height: 35px;
 
-      font-size: 16px;
+        text-shadow:
+          0 0 5px rgba(212, 175, 55, 0.5),
+          0 0 10px rgba(212, 175, 55, 0.3);
+      }
 
-      font-weight: bold;
+      /* ==========================================
+       SOCIAL BUTTON
+       ========================================== */
 
-      margin-bottom: 5px;
-    }
-
-    /* Username */
-    .username {
-      color: #ffffff;
-
-      font-size: 14px;
-    }
-
-    /* Animation */
-    .show {
-      animation: showCard 0.7s ease forwards;
-    }
-
-    @keyframes showCard {
-      from {
+      .social {
         opacity: 0;
 
         transform: translateY(20px);
+
+        margin: 12px 0;
+
+        padding: 14px;
+
+        border: 1px solid #d4af37;
+
+        border-radius: 12px;
+
+        background: rgba(17, 17, 17, 0.88);
+
+        text-decoration: none;
+
+        display: block;
+
+        transition:
+          transform 0.3s ease,
+          background 0.3s ease;
+
+        pointer-events: auto;
+
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
       }
 
-      to {
-        opacity: 1;
+      .social:hover {
+        transform: translateY(-3px);
 
-        transform: translateY(0);
-      }
-    }
+        background: rgba(212, 175, 55, 0.25);
 
-    /* Small screens */
-    @media (max-width: 400px) {
-      .card-container {
-        width: 88%;
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
       }
 
-      .welcome {
-        font-size: 23px;
+      /* ==========================================
+       SOCIAL NAME
+       ========================================== */
+
+      .social-name {
+        display: block;
+
+        color: #d4af37;
+
+        font-size: 16px;
+
+        font-weight: bold;
+
+        margin-bottom: 5px;
       }
 
-      .social {
-        padding: 12px;
+      /* ==========================================
+       USERNAME
+       ========================================== */
+
+      .username {
+        color: #ffffff;
+
+        font-size: 14px;
       }
-    }
-  </style>
-</head>
 
-<body>
+      /* ==========================================
+       SHOW ANIMATION
+       ========================================== */
 
-  <!-- ==========================================
-       SOCIAL MEDIA CARD
+      .show {
+        animation: showCard 0.7s ease forwards;
+      }
+
+      @keyframes showCard {
+        from {
+          opacity: 0;
+
+          transform: translateY(20px);
+        }
+
+        to {
+          opacity: 1;
+
+          transform: translateY(0);
+        }
+      }
+
+      /* ==========================================
+       MOBILE
+       ========================================== */
+
+      @media (max-width: 400px) {
+        .card-container {
+          width: 88%;
+        }
+
+        .welcome {
+          font-size: 23px;
+        }
+
+        .social {
+          padding: 12px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ==========================================
+       SOCIAL MEDIA CONTENT
        ========================================== -->
 
-  <div class="card-container">
+    <div class="card-container">
+      <!-- Welcome -->
 
-    <!-- Welcome text -->
-    <div id="welcome" class="welcome"></div>
+      <div id="welcome" class="welcome"></div>
 
+      <!-- ========================================
+         INSTAGRAM
+         ======================================== -->
 
-    <!-- Instagram -->
-    <a
-      class="social"
-      id="instagram"
-      href="https://www.instagram.com/mem0r4/"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <span class="social-name">
-        Instagram
-      </span>
+      <a
+        class="social"
+        id="instagram"
+        href="https://www.instagram.com/mem0r4/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="social-name"> Instagram </span>
 
-      <span class="username">
-        @mem0r4
-      </span>
-    </a>
+        <span class="username"> @mem0r4 </span>
+      </a>
 
+      <!-- ========================================
+         TIKTOK
+         ======================================== -->
 
-    <!-- TikTok -->
-    <a
-      class="social"
-      id="tiktok"
-      href="https://www.tiktok.com/@zerenonline0"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <span class="social-name">
-        TikTok
-      </span>
+      <a
+        class="social"
+        id="tiktok"
+        href="https://www.tiktok.com/@zerenonline0"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="social-name"> TikTok </span>
 
-      <span class="username">
-        @zerenonline0
-      </span>
-    </a>
+        <span class="username"> @zerenonline0 </span>
+      </a>
 
+      <!-- ========================================
+         SNAPCHAT
+         ======================================== -->
 
-    <!-- Snapchat -->
-    <a
-      class="social"
-      id="snapchat"
-      href="https://snapchat.com/t/d3i7IUdo"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <span class="social-name">
-        Snapchat
-      </span>
+      <a
+        class="social"
+        id="snapchat"
+        href="https://snapchat.com/t/d3i7IUdo"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="social-name"> Snapchat </span>
 
-      <span class="username">
-        @zerinonline0
-      </span>
-    </a>
+        <span class="username"> @zerinonline0 </span>
+      </a>
+    </div>
 
-  </div>
-
-
-  <!-- ==========================================
+    <!-- ==========================================
        MINDAR AR SCENE
        ========================================== -->
 
-  <a-scene
-    mindar-image="
+    <a-scene
+      mindar-image="
       imageTargetSrc: ./targets.mind;
       autoStart: true;
     "
-    color-space="sRGB"
-
-    renderer="
+      color-space="sRGB"
+      renderer="
       colorManagement: true;
       physicallyCorrectLights: true;
     "
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+      embedded
+    >
+      <!-- ========================================
+         CAMERA
+         ======================================== -->
 
-    vr-mode-ui="enabled: false"
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    device-orientation-permission-ui="enabled: true"
-
-    embedded
-  >
-
-    <!-- Camera -->
-    <a-camera
-      position="0 0 0"
-      look-controls="enabled: false"
-    ></a-camera>
-
-
-    <!-- ========================================
+      <!-- ========================================
          AR IMAGE TARGET
          ======================================== -->
 
-    <a-entity
-      id="target"
-      mindar-image-target="targetIndex: 0"
-    ></a-entity>
+      <a-entity
+        id="target"
+        mindar-image-target="
+        targetIndex: 0;
+      "
+      >
+        <!-- ======================================
+           LARGE 3D MODEL
+           ====================================== -->
 
-  </a-scene>
+        <a-gltf-model
+          id="arModel"
+          src="./model.glb"
+          position="0 0 0"
+          scale="3 3 3"
+          rotation="0 0 0"
+        ></a-gltf-model>
+      </a-entity>
+    </a-scene>
 
-
-  <!-- ==========================================
+    <!-- ==========================================
        JAVASCRIPT
        ========================================== -->
 
-  <script>
+    <script>
+      /* ==========================================
+       WELCOME TEXT
+       ========================================== */
 
-    /* ------------------------------------------
-       Welcome text
-       ------------------------------------------ */
+      const welcomeText = "Welcome ✦";
 
-    const welcomeText = "Welcome ✦";
+      const welcome = document.getElementById("welcome");
 
-    const welcome =
-      document.getElementById("welcome");
+      let index = 0;
 
-    let index = 0;
+      /* ==========================================
+       TYPE TEXT
+       ========================================== */
 
+      function typeText() {
+        if (index < welcomeText.length) {
+          welcome.textContent += welcomeText[index];
 
-    /* ------------------------------------------
-       Type Welcome text
-       ------------------------------------------ */
+          index++;
 
-    function typeText() {
-
-      if (index < welcomeText.length) {
-
-        welcome.textContent +=
-          welcomeText[index];
-
-        index++;
-
-        setTimeout(typeText, 120);
-
-      } else {
-
-        showSocialCards();
-
+          setTimeout(typeText, 120);
+        } else {
+          showSocialCards();
+        }
       }
-    }
 
+      /* ==========================================
+       SHOW SOCIAL CARDS
+       ========================================== */
 
-    /* ------------------------------------------
-       Show social cards
-       ------------------------------------------ */
+      function showSocialCards() {
+        const cards = document.querySelectorAll(".social");
 
-    function showSocialCards() {
+        cards.forEach((card, i) => {
+          setTimeout(
+            () => {
+              card.classList.add("show");
+            },
 
-      const cards =
-        document.querySelectorAll(".social");
+            i * 350,
+          );
+        });
+      }
 
-      cards.forEach((card, i) => {
+      /* ==========================================
+       RESET SOCIAL CARDS
+       ========================================== */
 
-        setTimeout(() => {
-
-          card.classList.add("show");
-
-        }, i * 350);
-
-      });
-    }
-
-
-    /* ------------------------------------------
-       Hide social cards
-       ------------------------------------------ */
-
-    function hideSocialCards() {
-
-      const cards =
-        document.querySelectorAll(".social");
-
-      cards.forEach((card) => {
-
-        card.classList.remove("show");
-
-        card.style.opacity = "0";
-
-      });
-
-      welcome.textContent = "";
-
-      index = 0;
-    }
-
-
-    /* ------------------------------------------
-       MindAR target
-       ------------------------------------------ */
-
-    const target =
-      document.getElementById("target");
-
-
-    /* ------------------------------------------
-       When AR target is detected
-       ------------------------------------------ */
-
-    target.addEventListener(
-      "targetFound",
-      function () {
-
-        console.log(
-          "ZEREN ONLINE AR CARD FOUND"
-        );
-
-        /* Reset */
-        welcome.textContent = "";
-
-        index = 0;
-
-        const cards =
-          document.querySelectorAll(".social");
+      function resetSocialCards() {
+        const cards = document.querySelectorAll(".social");
 
         cards.forEach((card) => {
-
           card.classList.remove("show");
 
           card.style.opacity = "0";
-
         });
 
+        welcome.textContent = "";
 
-        /* Start animation */
-        setTimeout(() => {
-
-          typeText();
-
-        }, 300);
-
+        index = 0;
       }
-    );
 
+      /* ==========================================
+       GET AR TARGET
+       ========================================== */
 
-    /* ------------------------------------------
-       When AR target disappears
-       ------------------------------------------ */
+      const target = document.getElementById("target");
 
-    target.addEventListener(
-      "targetLost",
-      function () {
+      /* ==========================================
+       GET 3D MODEL
+       ========================================== */
 
-        console.log(
-          "ZEREN ONLINE AR CARD LOST"
-        );
+      const arModel = document.getElementById("arModel");
 
-        /*
-          We don't immediately hide the card.
+      /* ==========================================
+       WHEN TARGET IS FOUND
+       ========================================== */
 
-          This prevents the buttons from
-          disappearing when the camera moves
-          slightly.
+      target.addEventListener(
+        "targetFound",
+
+        function () {
+          console.log("ZEREN ONLINE AR CARD FOUND");
+
+          /* Reset */
+
+          resetSocialCards();
+
+          /* Make 3D model large */
+
+          arModel.setAttribute("scale", "3 3 3");
+
+          /* Start Welcome animation */
+
+          setTimeout(
+            () => {
+              typeText();
+            },
+
+            300,
+          );
+        },
+      );
+
+      /* ==========================================
+       WHEN TARGET IS LOST
+       ========================================== */
+
+      target.addEventListener(
+        "targetLost",
+
+        function () {
+          console.log("ZEREN ONLINE AR CARD LOST");
+
+          /*
+          We don't immediately remove
+          the social buttons.
         */
-
-      }
-    );
-
-  </script>
-
-</body>
+        },
+      );
+    </script>
+  </body>
 </html>
