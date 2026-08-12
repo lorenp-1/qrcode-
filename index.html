@@ -1,164 +1,439 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ZEREN ONLINE - AR Card</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
 
-    <!-- کتێبخانەیێن MindAR و A-Frame بۆ کارکرنا AR -->
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+  <title>ZEREN ONLINE - AR Card</title>
 
-    <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
+  <!-- A-Frame -->
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+
+  <!-- MindAR -->
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: #000;
+    }
+
+    /* AR camera */
+    a-scene {
+      position: fixed !important;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* Social media container */
+    .card-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+
+      width: 85%;
+      max-width: 350px;
+
+      text-align: center;
+
+      z-index: 10;
+
+      pointer-events: none;
+    }
+
+    /* Welcome text */
+    .welcome {
+      color: #d4af37;
+
+      font-size: 26px;
+      font-weight: bold;
+
+      margin-bottom: 20px;
+
+      min-height: 35px;
+
+      text-shadow:
+        0 0 5px rgba(212, 175, 55, 0.5),
+        0 0 10px rgba(212, 175, 55, 0.3);
+    }
+
+    /* Social buttons */
+    .social {
+      opacity: 0;
+
+      transform: translateY(20px);
+
+      margin: 12px 0;
+      padding: 14px;
+
+      border: 1px solid #d4af37;
+      border-radius: 12px;
+
+      background: rgba(17, 17, 17, 0.88);
+
+      text-decoration: none;
+
+      display: block;
+
+      transition:
+        transform 0.3s ease,
+        background 0.3s ease;
+
+      pointer-events: auto;
+
+      box-shadow:
+        0 0 10px rgba(212, 175, 55, 0.15);
+    }
+
+    .social:hover {
+      transform: translateY(-3px);
+
+      background: rgba(212, 175, 55, 0.25);
+
+      box-shadow:
+        0 0 15px rgba(212, 175, 55, 0.3);
+    }
+
+    /* Social name */
+    .social-name {
+      display: block;
+
+      color: #d4af37;
+
+      font-size: 16px;
+
+      font-weight: bold;
+
+      margin-bottom: 5px;
+    }
+
+    /* Username */
+    .username {
+      color: #ffffff;
+
+      font-size: 14px;
+    }
+
+    /* Animation */
+    .show {
+      animation: showCard 0.7s ease forwards;
+    }
+
+    @keyframes showCard {
+      from {
+        opacity: 0;
+
+        transform: translateY(20px);
       }
 
-      /* شێوازێ کارتا سوشیال میدیای یا تە */
+      to {
+        opacity: 1;
+
+        transform: translateY(0);
+      }
+    }
+
+    /* Small screens */
+    @media (max-width: 400px) {
       .card-container {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 85%;
-        max-width: 350px;
-        text-align: center;
-        z-index: 10;
+        width: 88%;
       }
 
       .welcome {
-        color: #d4af37;
-        font-size: 26px;
-        font-weight: bold;
-        margin-bottom: 20px;
-        min-height: 35px;
+        font-size: 23px;
       }
 
       .social {
-        opacity: 0;
-        transform: translateY(20px);
-        margin: 12px 0;
-        padding: 14px;
-        border: 1px solid #d4af37;
-        border-radius: 12px;
-        background: rgba(17, 17, 17, 0.85);
-        text-decoration: none;
-        display: block;
-        transition: 0.3s;
+        padding: 12px;
       }
+    }
+  </style>
+</head>
 
-      .social:hover {
-        transform: translateY(-3px);
-        background: rgba(212, 175, 55, 0.25);
-      }
+<body>
 
-      .social-name {
-        display: block;
-        color: #d4af37;
-        font-size: 16px;
-        font-weight: bold;
-        margin-bottom: 5px;
-      }
+  <!-- ==========================================
+       SOCIAL MEDIA CARD
+       ========================================== -->
 
-      .username {
-        color: white;
-        font-size: 14px;
-      }
+  <div class="card-container">
 
-      .show {
-        animation: showCard 0.7s ease forwards;
-      }
+    <!-- Welcome text -->
+    <div id="welcome" class="welcome"></div>
 
-      @keyframes showCard {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- دیزاینێ سوشیال میدیای کە ل سەر شاشەیێ دیار دبيت کاتێ کامێرا ڤەکری بیت -->
-    <div class="card-container">
-      <div id="welcome" class="welcome"></div>
 
-      <a
-        class="social"
-        id="instagram"
-        href="https://www.instagram.com/mem0r4?igsh=MW8zd2RnYnp5YTF0ZQ=="
-        target="_blank"
-      >
-        <span class="social-name">Instagram</span>
-        <span class="username">@mem0r4</span>
-      </a>
-
-      <a
-        class="social"
-        id="tiktok"
-        href="https://www.tiktok.com/@zerenonline0?_r=1&_t=ZS-98pHig3gJ6r"
-        target="_blank"
-      >
-        <span class="social-name">TikTok</span>
-        <span class="username">@zerenonline0</span>
-      </a>
-
-      <a
-        class="social"
-        id="snapchat"
-        href="https://snapchat.com/t/d3i7IUdo"
-        target="_blank"
-      >
-        <span class="social-name">Snapchat</span>
-        <span class="username">@zerinonline0</span>
-      </a>
-    </div>
-
-    <!-- بەشێ Augmented Reality (بۆ ناسینا QR-کۆدێ تە) -->
-    <a-scene
-      mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;"
-      color-space="sRGB"
-      renderer="colorManagement: true, physicallyCorrectLights: true"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: true"
+    <!-- Instagram -->
+    <a
+      class="social"
+      id="instagram"
+      href="https://www.instagram.com/mem0r4/"
+      target="_blank"
+      rel="noopener noreferrer"
     >
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <span class="social-name">
+        Instagram
+      </span>
 
-      <!-- کاتێ کامێرا QR-کۆدێ د ناسیت -->
-      <a-entity mindar-image-target="targetIndex: 0"></a-entity>
-    </a-scene>
+      <span class="username">
+        @mem0r4
+      </span>
+    </a>
 
-    <script>
-      const welcomeText = "Welcome ✦";
-      const welcome = document.getElementById("welcome");
-      let index = 0;
 
-      function typeText() {
-        if (index < welcomeText.length) {
-          welcome.textContent += welcomeText[index];
-          index++;
-          setTimeout(typeText, 120);
-        } else {
-          showSocialCards();
-        }
+    <!-- TikTok -->
+    <a
+      class="social"
+      id="tiktok"
+      href="https://www.tiktok.com/@zerenonline0"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <span class="social-name">
+        TikTok
+      </span>
+
+      <span class="username">
+        @zerenonline0
+      </span>
+    </a>
+
+
+    <!-- Snapchat -->
+    <a
+      class="social"
+      id="snapchat"
+      href="https://snapchat.com/t/d3i7IUdo"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <span class="social-name">
+        Snapchat
+      </span>
+
+      <span class="username">
+        @zerinonline0
+      </span>
+    </a>
+
+  </div>
+
+
+  <!-- ==========================================
+       MINDAR AR SCENE
+       ========================================== -->
+
+  <a-scene
+    mindar-image="
+      imageTargetSrc: ./targets.mind;
+      autoStart: true;
+    "
+    color-space="sRGB"
+
+    renderer="
+      colorManagement: true;
+      physicallyCorrectLights: true;
+    "
+
+    vr-mode-ui="enabled: false"
+
+    device-orientation-permission-ui="enabled: true"
+
+    embedded
+  >
+
+    <!-- Camera -->
+    <a-camera
+      position="0 0 0"
+      look-controls="enabled: false"
+    ></a-camera>
+
+
+    <!-- ========================================
+         AR IMAGE TARGET
+         ======================================== -->
+
+    <a-entity
+      id="target"
+      mindar-image-target="targetIndex: 0"
+    ></a-entity>
+
+  </a-scene>
+
+
+  <!-- ==========================================
+       JAVASCRIPT
+       ========================================== -->
+
+  <script>
+
+    /* ------------------------------------------
+       Welcome text
+       ------------------------------------------ */
+
+    const welcomeText = "Welcome ✦";
+
+    const welcome =
+      document.getElementById("welcome");
+
+    let index = 0;
+
+
+    /* ------------------------------------------
+       Type Welcome text
+       ------------------------------------------ */
+
+    function typeText() {
+
+      if (index < welcomeText.length) {
+
+        welcome.textContent +=
+          welcomeText[index];
+
+        index++;
+
+        setTimeout(typeText, 120);
+
+      } else {
+
+        showSocialCards();
+
       }
+    }
 
-      function showSocialCards() {
-        const cards = document.querySelectorAll(".social");
-        cards.forEach((card, i) => {
-          setTimeout(() => {
-            card.classList.add("show");
-          }, i * 350);
+
+    /* ------------------------------------------
+       Show social cards
+       ------------------------------------------ */
+
+    function showSocialCards() {
+
+      const cards =
+        document.querySelectorAll(".social");
+
+      cards.forEach((card, i) => {
+
+        setTimeout(() => {
+
+          card.classList.add("show");
+
+        }, i * 350);
+
+      });
+    }
+
+
+    /* ------------------------------------------
+       Hide social cards
+       ------------------------------------------ */
+
+    function hideSocialCards() {
+
+      const cards =
+        document.querySelectorAll(".social");
+
+      cards.forEach((card) => {
+
+        card.classList.remove("show");
+
+        card.style.opacity = "0";
+
+      });
+
+      welcome.textContent = "";
+
+      index = 0;
+    }
+
+
+    /* ------------------------------------------
+       MindAR target
+       ------------------------------------------ */
+
+    const target =
+      document.getElementById("target");
+
+
+    /* ------------------------------------------
+       When AR target is detected
+       ------------------------------------------ */
+
+    target.addEventListener(
+      "targetFound",
+      function () {
+
+        console.log(
+          "ZEREN ONLINE AR CARD FOUND"
+        );
+
+        /* Reset */
+        welcome.textContent = "";
+
+        index = 0;
+
+        const cards =
+          document.querySelectorAll(".social");
+
+        cards.forEach((card) => {
+
+          card.classList.remove("show");
+
+          card.style.opacity = "0";
+
         });
-      }
 
-      // دەستپێکرنا نڤیسینێ
-      setTimeout(typeText, 1000);
-    </script>
-  </body>
+
+        /* Start animation */
+        setTimeout(() => {
+
+          typeText();
+
+        }, 300);
+
+      }
+    );
+
+
+    /* ------------------------------------------
+       When AR target disappears
+       ------------------------------------------ */
+
+    target.addEventListener(
+      "targetLost",
+      function () {
+
+        console.log(
+          "ZEREN ONLINE AR CARD LOST"
+        );
+
+        /*
+          We don't immediately hide the card.
+
+          This prevents the buttons from
+          disappearing when the camera moves
+          slightly.
+        */
+
+      }
+    );
+
+  </script>
+
+</body>
 </html>
